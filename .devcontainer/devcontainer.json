@@ -26,7 +26,8 @@
 			"extensions": [
                 "ms-dotnettools.csdevkit",
                 "mtxr.sqltools",
-                "mtxr.sqltools-driver-pg"
+                "mtxr.sqltools-driver-pg",
+                "streetsidesoftware.code-spell-checker"
             ]
 		}
 	}
