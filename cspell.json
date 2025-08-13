@@ -7,7 +7,8 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "appsettings"
+        "appsettings",
+        "Npgsql"
     ],
     "ignoreWords": [],
     "import": []
