@@ -8,6 +8,8 @@ public class Customer
     public string Name { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
 
+    public ICollection<Order> Orders { get; private set; } = new List<Order>();
+
     private Customer() { } // EF Core用
     public Customer(Guid id, string name, Email email)
     {

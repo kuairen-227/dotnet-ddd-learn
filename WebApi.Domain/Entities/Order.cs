@@ -6,6 +6,7 @@ public class Order
     public Guid CustomerId { get; private set; }
     public DateTime OrderDate { get; private set; }
 
+    public Customer Customer { get; private set; } = null!;
     private readonly List<OrderItem> _items = new();
     public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
 
