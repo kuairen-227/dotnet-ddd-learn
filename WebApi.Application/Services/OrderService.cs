@@ -17,9 +17,9 @@ public class OrderService
 
     public async Task<Order> PlaceOrderAsync(Guid customerId, (Guid productId, decimal price, int quantity)[] items)
     {
-        var customer = await _customerRepository.GetByIdAsync(customerId);
+        var customer = await _customerRepository.GetByIdAsync(customerId)
             ?? throw new ArgumentException("指定された顧客が存在しません", nameof(customerId));
-        var order = new Order(Guid.NewGuid(), customerId, DateTime.UtcNow);
+        var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow);
 
         foreach (var item in items)
         {
