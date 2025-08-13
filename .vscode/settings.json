@@ -1,5 +1,9 @@
 {
     "conventionalCommits.scopes": [
+        "api",
+        "application",
+        "domain",
+        "infrastructure",
         "workspace"
     ]
 }
