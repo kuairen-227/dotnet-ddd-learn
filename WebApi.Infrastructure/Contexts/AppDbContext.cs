@@ -18,10 +18,28 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Order>()
-            .HasKey(o => o.Id);
-        modelBuilder.Entity<Customer>()
-            .HasKey(c => c.Id);
+        modelBuilder.Entity<Order>(builder =>
+        {
+            builder.HasKey(o => o.Id);
+            builder.HasMany(o => o.Items);
+        });
+        modelBuilder.Entity<OrderItem>(builder =>
+        {
+            builder.HasKey(oi => oi.Id);
+            builder.OwnsOne(oi => oi.UnitPrice, money =>
+            {
+                money.Property(m => m.Amount).HasColumnName("unit_price").IsRequired();
+                money.Property(m => m.Currency).HasColumnName("currency").IsRequired();
+            });
+        });
+        modelBuilder.Entity<Customer>(builder =>
+        {
+            builder.HasKey(c => c.Id);
+            builder.OwnsOne(c => c.Email, email =>
+            {
+                email.Property(e => e.Value).HasColumnName("email").IsRequired();
+            });
+        });
 
         base.OnModelCreating(modelBuilder);
     }

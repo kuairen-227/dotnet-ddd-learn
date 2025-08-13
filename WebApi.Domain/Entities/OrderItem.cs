@@ -6,9 +6,10 @@ public class OrderItem
 {
     public Guid Id { get; private set; }
     public Guid ProductId { get; private set; }
-    public Money UnitPrice { get; private set; }
+    public Money UnitPrice { get; private set; } = null!;
     public int Quantity { get; private set; }
 
+    private OrderItem() { } // EF Core用
     public OrderItem(Guid id, Guid productId, Money unitPrice, int quantity)
     {
         Id = id;

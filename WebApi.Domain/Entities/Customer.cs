@@ -5,9 +5,10 @@ namespace WebApi.Domain.Entities;
 public class Customer
 {
     public Guid Id { get; private set; }
-    public string Name { get; private set; }
-    public Email Email { get; private set; }
+    public string Name { get; private set; } = null!;
+    public Email Email { get; private set; } = null!;
 
+    private Customer() { } // EF Core用
     public Customer(Guid id, string name, Email email)
     {
         Id = id;
