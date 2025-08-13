@@ -16,7 +16,7 @@ public sealed class Money
         Currency = currency;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => obj is Money other && Amount == other.Amount && Currency == other.Currency;
     public override int GetHashCode() => HashCode.Combine(Amount, Currency);
     public override string ToString() => $"{Amount} {Currency}";

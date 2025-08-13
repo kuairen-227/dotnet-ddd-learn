@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace WebApi.Domain.ValueObjects;
 
 public sealed class Email
@@ -18,7 +20,7 @@ public sealed class Email
         Value = value;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => obj is Email other && Value.Equals(other.Value, StringComparison.OrdinalIgnoreCase);
     public override int GetHashCode() => Value.ToLowerInvariant().GetHashCode();
     public override string ToString() => Value;
