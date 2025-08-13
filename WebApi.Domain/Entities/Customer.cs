@@ -14,4 +14,9 @@ public class Customer
         Name = name ?? throw new ArgumentNullException(nameof(name), "名前は必須です");
         Email = email ?? throw new ArgumentNullException(nameof(email), "Emailは必須です");
     }
+
+    public void ChangeEmail(Email newEmail)
+    {
+        Email = newEmail ?? throw new ArgumentNullException(nameof(newEmail), "新しいEmailは必須です");
+    }
 }
