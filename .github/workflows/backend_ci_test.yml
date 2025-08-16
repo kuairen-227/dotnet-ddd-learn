@@ -28,11 +28,11 @@ jobs:
       - name: Run Tests with Coverage
         run: |
           dotnet test --no-restore \
-             --logger "trx;LogFileName=test-result.trx" \
-             /p:CollectCoverage=true \
-             /p:CoverletOutputFormat=cobertura \
-             /p:CoverletOutput=./coverage.cobertura.xml \
-             /p:ExcludeByFile="**/Migrations/*"
+            --logger "trx;LogFileName=test-result.trx" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutput=./coverage.cobertura.xml \
+            /p:ExcludeByFile="**/Migrations/*"
 
       - name: Find coverage output path
         run: |
