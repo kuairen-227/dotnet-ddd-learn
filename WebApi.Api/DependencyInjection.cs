@@ -1,3 +1,4 @@
+using WebApi.Application.Services;
 using WebApi.Domain.Common;
 using WebApi.Infrastructure.Contexts;
 
@@ -8,6 +9,7 @@ public static class DependencyInjection
     public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
     {
         // Application 層
+        services.AddScoped<OrderService>();
 
         // Infrastructure 層
         services.AddScoped<IUnitOfWork, UnitOfWork>();

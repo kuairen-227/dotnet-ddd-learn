@@ -14,7 +14,19 @@ public class OrderService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<OrderDto> PlaceOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken)
+   public async Task<IEnumerable<OrderDto>> GetOrdersAsync(CancellationToken cancellationToken)
+   {
+       var orders = await _unitOfWork.Orders.GetAllAsync(cancellationToken);
+       return orders.Select(o => o.ToDto());
+   }
+
+   public async Task<OrderDto?> GetOrderAsync(Guid id, CancellationToken cancellationToken)
+   {
+       var order = await _unitOfWork.Orders.GetByIdAsync(id, cancellationToken);
+       return order?.ToDto();
+   }
+
+    public async Task<OrderDto> CreateOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken)
     {
         var customer = await _unitOfWork.Customers.GetByIdAsync(dto.CustomerId, cancellationToken)
             ?? throw new InvalidOperationException("指定された顧客が存在しません");
