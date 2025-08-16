@@ -11,7 +11,6 @@ public static class OrderMapping
             order.Id,
             order.CustomerId,
             order.OrderDate,
-            order.Currency,
             order.GetTotalAmount()
         );
 }
@@ -22,7 +21,6 @@ public static class OrderItemMapping
         new OrderItemDto(
             item.Id,
             item.ProductId,
-            item.UnitPrice,
             item.Quantity
         );
 }
@@ -31,14 +29,13 @@ public static class CreateOrderMapping
 {
     public static Order ToEntity(this CreateOrderDto createOrderDto)
     {
-        var order = new Order(Guid.NewGuid(), createOrderDto.CustomerId, DateTime.UtcNow, createOrderDto.Currency);
+        var order = new Order(Guid.NewGuid(), createOrderDto.CustomerId, DateTime.UtcNow);
 
         foreach (var item in createOrderDto.Items)
         {
             var orderItem = new OrderItem(
                 Guid.NewGuid(),
                 item.ProductId,
-                item.UnitPrice,
                 item.Quantity
             );
             order.AddItem(orderItem);

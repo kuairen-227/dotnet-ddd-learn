@@ -30,11 +30,11 @@ public class OrderService
     {
         var customer = await _unitOfWork.Customers.GetByIdAsync(dto.CustomerId, cancellationToken)
             ?? throw new InvalidOperationException("指定された顧客が存在しません");
-        var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow, dto.Currency);
+        var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow);
 
         foreach (var itemDto in dto.Items)
         {
-            var orderItem = new OrderItem(Guid.NewGuid(), itemDto.ProductId, itemDto.UnitPrice, itemDto.Quantity);
+            var orderItem = new OrderItem(Guid.NewGuid(), itemDto.ProductId, itemDto.Quantity);
             order.AddItem(orderItem);
         }
 

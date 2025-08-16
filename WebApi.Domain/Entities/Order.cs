@@ -5,18 +5,16 @@ public class Order
     public Guid Id { get; private set; }
     public Guid CustomerId { get; private set; }
     public DateTime OrderDate { get; private set; }
-    public string Currency { get; private set; }
 
     public Customer Customer { get; private set; } = null!;
     private readonly List<OrderItem> _items = new();
     public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
 
-    public Order(Guid id, Guid customerId, DateTime orderDate, string currency)
+    public Order(Guid id, Guid customerId, DateTime orderDate)
     {
         Id = id;
         CustomerId = customerId;
         OrderDate = orderDate;
-        Currency = currency;
     }
 
     public void AddItem(OrderItem item)

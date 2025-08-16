@@ -11,17 +11,15 @@ public class OrderTests
         var orderId = Guid.NewGuid();
         var customerId = Guid.NewGuid();
         var orderDate = DateTime.UtcNow;
-        var currency = "JPY";
 
         // When
-        var order = new Order(orderId, customerId, orderDate, currency);
+        var order = new Order(orderId, customerId, orderDate);
 
         // Then
         Assert.NotNull(order);
         Assert.Equal(orderId, order.Id);
         Assert.Equal(customerId, order.CustomerId);
         Assert.Equal(orderDate, order.OrderDate);
-        Assert.Equal(currency, order.Currency);
         Assert.Empty(order.Items);
     }
 
@@ -29,8 +27,8 @@ public class OrderTests
     public void 正常系_AddItem()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, "JPY");
-        var item = new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 100, 2);
+        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
+        var item = new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 2);
 
         // When
         order.AddItem(item);
@@ -44,7 +42,7 @@ public class OrderTests
     public void 異常系_AddItem_ArgumentNullException()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, "JPY");
+        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
 
         // Then
         Assert.Throws<ArgumentNullException>(() => order.AddItem(null!));
@@ -54,9 +52,9 @@ public class OrderTests
     public void 正常系_GetTotalAmount()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, "JPY");
-        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 100, 2));
-        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 200, 1));
+        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
+        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 2));
+        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 1));
 
         // When
         var totalAmount = order.GetTotalAmount();

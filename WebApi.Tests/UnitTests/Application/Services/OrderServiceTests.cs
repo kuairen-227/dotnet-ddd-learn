@@ -32,8 +32,8 @@ public class OrderServiceTests
         // Given
         var orders = new List<Order>
         {
-            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, "USD"),
-            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow, "JPY")
+            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow),
+            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow)
         };
         _orderMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(orders);
@@ -50,7 +50,7 @@ public class OrderServiceTests
     {
         // Given
         var orderId = Guid.NewGuid();
-        var order = new Order(orderId, Guid.NewGuid(), DateTime.UtcNow, "JPY");
+        var order = new Order(orderId, Guid.NewGuid(), DateTime.UtcNow);
         _orderMock.Setup(r => r.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(order);
 
@@ -89,11 +89,10 @@ public class OrderServiceTests
         var dto = new CreateOrderDto
         (
             customerId,
-            "JPY",
             new List<CreateOrderItemDto>
             {
-                new(Guid.NewGuid(), 100, 2),
-                new(Guid.NewGuid(), 200, 1)
+                new(Guid.NewGuid(), 2),
+                new(Guid.NewGuid(), 1)
             }
         );
 
@@ -104,7 +103,6 @@ public class OrderServiceTests
         // Then
         var result = await _service.CreateOrderAsync(dto, CancellationToken.None);
         Assert.NotNull(result);
-        Assert.Equal(dto.Items.Sum(i => i.UnitPrice * i.Quantity), result.TotalAmount);
         _orderMock.Verify(r => r.Add(It.IsAny<Order>()), Times.Once);
         _unitOfWork.Verify(u => u.SaveChangeAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -118,7 +116,7 @@ public class OrderServiceTests
             .ReturnsAsync((Customer?)null);
 
         // When
-        var dto = new CreateOrderDto(customerId, "JPY", new List<CreateOrderItemDto>());
+        var dto = new CreateOrderDto(customerId, new List<CreateOrderItemDto>());
 
         // Then
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>

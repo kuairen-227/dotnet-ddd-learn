@@ -4,9 +4,9 @@ public class Product
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
-    public decimal Price { get; private set; }
+    public int Price { get; private set; }
 
-    public Product(Guid id, string name, decimal price)
+    public Product(Guid id, string name, int price)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "商品名は必須です");
