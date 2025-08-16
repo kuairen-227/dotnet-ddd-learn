@@ -47,6 +47,7 @@ namespace WebApi.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid")
                         .HasColumnName("customer_id");

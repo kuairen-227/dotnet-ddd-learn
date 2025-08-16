@@ -34,7 +34,10 @@ public class OrderService
 
         foreach (var itemDto in dto.Items)
         {
-            var orderItem = new OrderItem(Guid.NewGuid(), itemDto.ProductId, itemDto.Quantity);
+            var product = await _unitOfWork.Products.GetByIdAsync(itemDto.ProductId, cancellationToken)
+                ?? throw new InvalidOperationException("指定された商品が存在しません");
+
+            var orderItem = new OrderItem(Guid.NewGuid(), product, itemDto.Quantity);
             order.AddItem(orderItem);
         }
 

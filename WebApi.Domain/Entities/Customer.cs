@@ -14,7 +14,7 @@ public class Customer
     public Customer(Guid id, string name, Email email)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException(nameof(name), "名前は必須です");
+            throw new ArgumentNullException(nameof(name), "Nameは必須です");
 
         Id = id;
         Name = name;

@@ -28,7 +28,9 @@ public class OrderTests
     {
         // Given
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
-        var item = new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 2);
+
+        var product = new Product(Guid.NewGuid(), "テスト 商品", 100);
+        var item = new OrderItem(Guid.NewGuid(), product, 2);
 
         // When
         order.AddItem(item);
@@ -53,8 +55,10 @@ public class OrderTests
     {
         // Given
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
-        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 2));
-        order.AddItem(new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 1));
+        var product1 = new Product(Guid.NewGuid(), "商品A", 100);
+        order.AddItem(new OrderItem(Guid.NewGuid(), product1, 2));
+        var product2 = new Product(Guid.NewGuid(), "商品B", 200);
+        order.AddItem(new OrderItem(Guid.NewGuid(), product2, 1));
 
         // When
         var totalAmount = order.GetTotalAmount();

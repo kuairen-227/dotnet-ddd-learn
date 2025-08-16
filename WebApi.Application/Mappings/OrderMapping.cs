@@ -27,15 +27,17 @@ public static class OrderItemMapping
 
 public static class CreateOrderMapping
 {
-    public static Order ToEntity(this CreateOrderDto createOrderDto)
+    public static Order ToEntity(this CreateOrderDto createOrderDto, IEnumerable<Product> products)
     {
         var order = new Order(Guid.NewGuid(), createOrderDto.CustomerId, DateTime.UtcNow);
 
         foreach (var item in createOrderDto.Items)
         {
+            var product = products.FirstOrDefault(p => p.Id == item.ProductId)
+                ?? throw new InvalidOperationException("指定された商品が存在しません");
             var orderItem = new OrderItem(
                 Guid.NewGuid(),
-                item.ProductId,
+                product,
                 item.Quantity
             );
             order.AddItem(orderItem);
