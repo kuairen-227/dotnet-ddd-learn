@@ -6,3 +6,9 @@ public sealed record CustomerDto
     string Name,
     string Email
 );
+
+public sealed record CreateCustomerDto
+(
+    string Name,
+    string Email
+);
