@@ -13,7 +13,7 @@ public sealed class Email
     public Email(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Emailは必須です");
+            throw new ArgumentNullException("Emailは必須です");
         if (!EmailRegex.IsMatch(value))
             throw new ArgumentException("Emailの形式が正しくありません");
 

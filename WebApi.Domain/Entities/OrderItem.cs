@@ -1,5 +1,3 @@
-using WebApi.Domain.ValueObjects;
-
 namespace WebApi.Domain.Entities;
 
 public class OrderItem

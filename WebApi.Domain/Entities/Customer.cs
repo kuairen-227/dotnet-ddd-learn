@@ -13,8 +13,11 @@ public class Customer
     private Customer() { } // EF Core用
     public Customer(Guid id, string name, Email email)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name), "名前は必須です");
+
         Id = id;
-        Name = name ?? throw new ArgumentNullException(nameof(name), "名前は必須です");
+        Name = name;
         Email = email ?? throw new ArgumentNullException(nameof(email), "Emailは必須です");
     }
 
