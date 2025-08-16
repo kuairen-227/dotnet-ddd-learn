@@ -4,7 +4,8 @@
         "application",
         "domain",
         "infrastructure",
-        "workspace"
+        "workspace",
+        "tests"
     ],
     "sqltools.connections": [
         {
