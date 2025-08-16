@@ -16,9 +16,8 @@ public class OrderService
 
     public async Task<OrderDto> PlaceOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken)
     {
-        var customer = await _unitOfWork.Customers.GetByIdAsync(dto.CustomerId)
+        var customer = await _unitOfWork.Customers.GetByIdAsync(dto.CustomerId, cancellationToken)
             ?? throw new InvalidOperationException("指定された顧客が存在しません");
-
         var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow, dto.Currency);
 
         foreach (var itemDto in dto.Items)

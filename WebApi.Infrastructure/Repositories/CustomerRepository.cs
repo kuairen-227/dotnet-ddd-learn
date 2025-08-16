@@ -14,14 +14,14 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task<Customer?> GetByIdAsync(Guid id)
+    public async Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Customers.FindAsync(id);
+        return await _context.Customers.FindAsync(id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Customer>> GetAllAsync()
+    public async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Customers.ToListAsync();
+        return await _context.Customers.ToListAsync(cancellationToken);
     }
 
     public void Add(Customer customer)
