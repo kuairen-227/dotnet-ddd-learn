@@ -16,12 +16,18 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.FindAsync(id, cancellationToken);
+        return await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(oi => oi.Product)
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken = default )
+    public async Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.ToListAsync(cancellationToken);
+        return await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(oi => oi.Product)
+            .ToListAsync(cancellationToken);
     }
 
     public void Add(Order order)
