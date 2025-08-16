@@ -10,6 +10,8 @@ public static class DependencyInjection
     {
         // Application 層
         services.AddScoped<OrderService>();
+        services.AddScoped<CustomerService>();
+        services.AddScoped<ProductService>();
 
         // Infrastructure 層
         services.AddScoped<IUnitOfWork, UnitOfWork>();
