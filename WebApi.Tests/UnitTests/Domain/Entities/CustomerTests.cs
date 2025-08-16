@@ -6,7 +6,7 @@ namespace WebApi.Tests.UnitTests.Domain.Entities;
 public class CustomerTests
 {
     [Fact]
-    public void 正常系_顧客情報が正しい場合_インスタンスが生成できる()
+    public void 正常系_インスタンス生成()
     {
         // Given
         var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
@@ -36,7 +36,7 @@ public class CustomerTests
     }
 
     [Fact]
-    public void 正常系_メールアドレスの変更()
+    public void 正常系_ChangeEmail()
     {
         // Given
         var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
@@ -46,5 +46,17 @@ public class CustomerTests
 
         // Then
         Assert.Equal("test2@example.com", customer.Email.Value);
+    }
+
+    [Fact]
+    public void 異常系_ChangeEmail_メールアドレスが空_ArgumentException()
+    {
+        // Given
+        var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
+
+        // Then
+        Assert.Throws<ArgumentNullException>(() =>
+            customer.ChangeEmail(new Email(""))
+        );
     }
 }

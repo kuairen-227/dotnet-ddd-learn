@@ -5,7 +5,7 @@ namespace WebApi.Tests.UnitTests.Domain.Entities;
 public class OrderItemTests
 {
     [Fact]
-    public void 正常系_注文明細情報が正しい場合_インスタンスが生成できる()
+    public void 正常系_インスタンス生成()
     {
         // Given
         var orderItem = new OrderItem(Guid.NewGuid(), Guid.NewGuid(), 100, 2);
