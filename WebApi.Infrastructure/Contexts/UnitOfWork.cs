@@ -7,14 +7,16 @@ namespace WebApi.Infrastructure.Contexts;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
-    public ICustomerRepository Customers { get; }
     public IOrderRepository Orders { get; }
+    public ICustomerRepository Customers { get; }
+    public IProductRepository Products { get; }
 
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
-        Customers = new CustomerRepository(_context);
         Orders = new OrderRepository(_context);
+        Customers = new CustomerRepository(_context);
+        Products = new ProductRepository(_context);
     }
 
     public async Task<int> SaveChangeAsync(CancellationToken cancellationToken = default)

@@ -7,6 +7,7 @@ public class AppDbContext : DbContext
 {
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Product> Products => Set<Product>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -34,6 +35,10 @@ public class AppDbContext : DbContext
             {
                 email.Property(e => e.Value).HasColumnName("email").IsRequired();
             });
+        });
+        modelBuilder.Entity<Product>(builder =>
+        {
+            builder.HasKey(p => p.Id);
         });
 
         base.OnModelCreating(modelBuilder);
