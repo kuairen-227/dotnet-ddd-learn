@@ -26,11 +26,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<OrderItem>(builder =>
         {
             builder.HasKey(oi => oi.Id);
-            builder.OwnsOne(oi => oi.UnitPrice, money =>
-            {
-                money.Property(m => m.Amount).HasColumnName("unit_price").IsRequired();
-                money.Property(m => m.Currency).HasColumnName("currency").IsRequired();
-            });
         });
         modelBuilder.Entity<Customer>(builder =>
         {

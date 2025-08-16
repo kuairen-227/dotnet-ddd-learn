@@ -5,16 +5,18 @@ public class Order
     public Guid Id { get; private set; }
     public Guid CustomerId { get; private set; }
     public DateTime OrderDate { get; private set; }
+    public string Currency { get; private set; }
 
     public Customer Customer { get; private set; } = null!;
     private readonly List<OrderItem> _items = new();
     public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
 
-    public Order(Guid id, Guid customerId, DateTime orderDate)
+    public Order(Guid id, Guid customerId, DateTime orderDate, string currency)
     {
         Id = id;
         CustomerId = customerId;
         OrderDate = orderDate;
+        Currency = currency;
     }
 
     public void AddItem(OrderItem item)
@@ -23,14 +25,12 @@ public class Order
         _items.Add(item);
     }
 
-    public decimal GetTotalAmount(string currency)
+    public decimal GetTotalAmount()
     {
         decimal total = 0;
         foreach (var item in _items)
         {
-            if (item.UnitPrice.Currency != currency)
-                throw new InvalidOperationException($"アイテムの通貨 '{item.UnitPrice.Currency}' は注文の通貨 '{currency}' と一致しません");
-            total += item.GetTotalPrice().Amount;
+            total += item.GetTotalPrice();
         }
         return total;
     }
