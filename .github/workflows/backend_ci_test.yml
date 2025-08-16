@@ -33,7 +33,7 @@ jobs:
       - name: Run Tests with Coverage
         run: |
           dotnet test --no-restore \
-            --logger "trx;LogFileName=test-result.trx" \
+            --logger "trx;LogFileName=test-results.trx" \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=cobertura \
             /p:CoverletOutput=./coverage.cobertura.xml \
