@@ -1,34 +1,35 @@
+using WebApi.Application.DTOs;
+using WebApi.Application.Mappings;
+using WebApi.Domain.Common;
 using WebApi.Domain.Entities;
-using WebApi.Domain.Repositories;
-using WebApi.Domain.ValueObjects;
 
 namespace WebApi.Application.Services;
 
 public class OrderService
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly ICustomerRepository _customerRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public OrderService(IOrderRepository orderRepository, ICustomerRepository customerRepository)
+    public OrderService(IUnitOfWork unitOfWork)
     {
-        _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository), "OrderRepositoryは必須です");
-        _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository), "CustomerRepositoryは必須です");
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Order> PlaceOrderAsync(Guid customerId, (Guid productId, decimal price, int quantity)[] items)
+    public async Task<OrderDto> PlaceOrderAsync(CreateOrderDto dto, CancellationToken cancellationToken)
     {
-        var customer = await _customerRepository.GetByIdAsync(customerId)
-            ?? throw new ArgumentException("指定された顧客が存在しません", nameof(customerId));
-        var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow);
+        var customer = await _unitOfWork.Customers.GetByIdAsync(dto.CustomerId)
+            ?? throw new InvalidOperationException("指定された顧客が存在しません");
 
-        foreach (var item in items)
+        var order = new Order(Guid.NewGuid(), customer.Id, DateTime.UtcNow, dto.Currency);
+
+        foreach (var itemDto in dto.Items)
         {
-            var money = new Money(item.price, "JPY");
-            var orderItem = new OrderItem(Guid.NewGuid(), order.Id, money, item.quantity);
+            var orderItem = new OrderItem(Guid.NewGuid(), itemDto.ProductId, itemDto.UnitPrice, itemDto.Quantity);
             order.AddItem(orderItem);
         }
 
-        await _orderRepository.AddAsync(order);
-        return order;
+        _unitOfWork.Orders.Add(order);
+        await _unitOfWork.SaveChangeAsync(cancellationToken);
+
+        return order.ToDto();
     }
 }
