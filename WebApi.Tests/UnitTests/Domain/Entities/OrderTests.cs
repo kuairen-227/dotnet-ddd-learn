@@ -1,4 +1,5 @@
 using WebApi.Domain.Entities;
+using WebApi.Domain.ValueObjects;
 
 namespace WebApi.Tests.UnitTests.Domain.Entities;
 
@@ -29,7 +30,10 @@ public class OrderTests
         // Given
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
 
-        var product = new Product(Guid.NewGuid(), "テスト 商品", 100);
+        var product = new Product(Guid.NewGuid(),
+            new ProductName("テスト 商品"),
+            new Price(100)
+        );
         var item = new OrderItem(Guid.NewGuid(), product, 2);
 
         // When
@@ -55,9 +59,17 @@ public class OrderTests
     {
         // Given
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
-        var product1 = new Product(Guid.NewGuid(), "商品A", 100);
+        var product1 = new Product(
+            Guid.NewGuid(),
+            new ProductName("商品A"),
+            new Price(100)
+        );
         order.AddItem(new OrderItem(Guid.NewGuid(), product1, 2));
-        var product2 = new Product(Guid.NewGuid(), "商品B", 200);
+        var product2 = new Product(
+            Guid.NewGuid(),
+            new ProductName("商品B"),
+            new Price(200)
+        );
         order.AddItem(new OrderItem(Guid.NewGuid(), product2, 1));
 
         // When

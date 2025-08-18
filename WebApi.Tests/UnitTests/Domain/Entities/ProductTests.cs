@@ -1,4 +1,5 @@
 using WebApi.Domain.Entities;
+using WebApi.Domain.ValueObjects;
 
 namespace WebApi.Tests.UnitTests.Domain.Entities;
 
@@ -9,8 +10,8 @@ public class ProductTests
     {
         // Given
         var id = Guid.NewGuid();
-        var name = "商品A";
-        var price = 100;
+        var name = new ProductName("商品A");
+        var price = new Price(100);
 
         // When
         var product = new Product(id, name, price);
@@ -19,31 +20,6 @@ public class ProductTests
         Assert.NotNull(product);
         Assert.Equal(id, product.Id);
         Assert.Equal(name, product.Name);
-        Assert
-        .Equal(price, product.Price);
-    }
-
-    [Fact]
-    public void 異常系_名前が空_ArgumentException()
-    {
-        // Given
-        var id = Guid.NewGuid();
-        var name = "";
-        var price = 100;
-
-        // Then
-        Assert.Throws<ArgumentNullException>(() => new Product(id, name, price));
-    }
-
-    [Fact]
-    public void 異常系_価格が0以下_ArgumentOutOfRangeException()
-    {
-        // Given
-        var id = Guid.NewGuid();
-        var name = "商品A";
-        var price = 0;
-
-        // Then
-        Assert.Throws<ArgumentOutOfRangeException>(() => new Product(id, name, price));
+        Assert.Equal(price, product.Price);
     }
 }

@@ -17,5 +17,5 @@ public class OrderItem
         Quantity = quantity > 0 ? quantity : throw new ArgumentOutOfRangeException(nameof(quantity), "数量は1以上でなければなりません");
     }
 
-    public decimal GetTotalPrice() => Product.Price * Quantity;
+    public decimal GetTotalPrice() => Product.Price.Value * Quantity;
 }

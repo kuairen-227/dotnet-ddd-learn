@@ -5,7 +5,7 @@ namespace WebApi.Tests.UnitTests.Domain.ValueObjects;
 public class EmailTests
 {
     [Fact]
-    public void 正常系_正しいメールアドレス_インスタンスが生成できる()
+    public void 正常系_インスタンス生成()
     {
         // Given
         var validEmail = "test@example.com";
@@ -18,7 +18,7 @@ public class EmailTests
     }
 
     [Fact]
-    public void 異常系_空のメールアドレス_ArgumentException()
+    public void 異常系_空のメールアドレス_ArgumentNullException()
     {
         // Given
         var invalidEmail = "";
