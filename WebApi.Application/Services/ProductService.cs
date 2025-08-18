@@ -2,6 +2,7 @@ using WebApi.Application.DTOs;
 using WebApi.Application.Mappings;
 using WebApi.Domain.Common;
 using WebApi.Domain.Entities;
+using WebApi.Domain.ValueObjects;
 
 namespace WebApi.Application.Services;
 
@@ -28,7 +29,11 @@ public class ProductService
 
     public async Task<ProductDto> CreateProductAsync(CreateProductDto dto, CancellationToken cancellationToken)
     {
-        var product = new Product(Guid.NewGuid(), dto.Name, dto.Price);
+        var product = new Product(
+            Guid.NewGuid(),
+            new ProductName(dto.Name),
+            new Price(dto.Price)
+        );
 
         _unitOfWork.Products.Add(product);
         await _unitOfWork.SaveChangeAsync(cancellationToken);

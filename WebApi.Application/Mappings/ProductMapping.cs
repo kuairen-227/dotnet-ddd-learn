@@ -9,8 +9,8 @@ public static class ProductMapping
     public static ProductDto ToDto(this Product product) =>
         new ProductDto(
             product.Id,
-            product.Name,
-            product.Price
+            product.Name.Value,
+            product.Price.Value
         );
 }
 
@@ -18,6 +18,10 @@ public static class CreateProductMapping
 {
     public static Product ToEntity(this CreateProductDto createProductDto)
     {
-        return new Product(Guid.NewGuid(), createProductDto.Name, createProductDto.Price);
+        return new Product(
+            Guid.NewGuid(),
+            new ProductName(createProductDto.Name),
+            new Price(createProductDto.Price)
+        );
     }
 }
