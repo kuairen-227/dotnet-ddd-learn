@@ -87,8 +87,8 @@ public class OrderServiceTests
         var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
         _customerMock.Setup(r => r.GetByIdAsync(customer.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(customer);
-        var product1 = new Product(Guid.NewGuid(), "商品A", 100);
-        var product2 = new Product(Guid.NewGuid(), "商品B", 200);
+        var product1 = new Product(Guid.NewGuid(), new ProductName("商品A"), new Price(100));
+        var product2 = new Product(Guid.NewGuid(), new ProductName("商品B"), new Price(200));
         _productMock.Setup(r => r.GetByIdAsync(product1.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(product1);
         _productMock.Setup(r => r.GetByIdAsync(product2.Id, It.IsAny<CancellationToken>()))
@@ -133,7 +133,7 @@ public class OrderServiceTests
         var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
         _customerMock.Setup(r => r.GetByIdAsync(customer.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(customer);
-        var product = new Product(Guid.NewGuid(), "商品A", 100);
+        var product = new Product(Guid.NewGuid(), new ProductName("商品A"), new Price(100));
         _productMock.Setup(r => r.GetByIdAsync(product.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(product);
 

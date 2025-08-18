@@ -29,8 +29,8 @@ public class ProductServiceTests
         // Given
         var products = new List<Product>
         {
-            new Product(Guid.NewGuid(), "テスト 商品1", 100),
-            new Product(Guid.NewGuid(), "テスト 商品2", 200)
+            new Product(Guid.NewGuid(), new ProductName("テスト 商品1"), new Price(100)),
+            new Product(Guid.NewGuid(), new ProductName("テスト 商品2"), new Price(200))
         };
         _productMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(products);
@@ -47,7 +47,7 @@ public class ProductServiceTests
     {
         // Given
         var productId = Guid.NewGuid();
-        var product = new Product(productId, "テスト 商品1", 100);
+        var product = new Product(productId, new ProductName("テスト 商品1"), new Price(100));
         _productMock.Setup(r => r.GetByIdAsync(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(product);
 

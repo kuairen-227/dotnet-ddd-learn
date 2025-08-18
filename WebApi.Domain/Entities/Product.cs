@@ -5,9 +5,10 @@ namespace WebApi.Domain.Entities;
 public class Product
 {
     public Guid Id { get; private set; }
-    public ProductName Name { get; private set; }
-    public Price Price { get; private set; }
+    public ProductName Name { get; private set; } = null!;
+    public Price Price { get; private set; } = null!;
 
+    private Product() { } // EF Core用
     public Product(Guid id, ProductName name, Price price)
     {
         Id = id;

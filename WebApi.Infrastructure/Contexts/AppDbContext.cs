@@ -40,6 +40,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Product>(builder =>
         {
             builder.HasKey(p => p.Id);
+            builder.OwnsOne(p => p.Name, name =>
+            {
+                name.Property(n => n.Value).HasColumnName("name").IsRequired();
+            });
+            builder.OwnsOne(p => p.Price, price =>
+            {
+                price.Property(p => p.Value).HasColumnName("price").IsRequired();
+            });
         });
 
         base.OnModelCreating(modelBuilder);
