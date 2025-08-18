@@ -18,7 +18,7 @@ public class Customer
 
         Id = id;
         Name = name;
-        Email = email ?? throw new ArgumentNullException(nameof(email), "Emailは必須です");
+        Email = email;
     }
 
     public void ChangeEmail(Email newEmail)
