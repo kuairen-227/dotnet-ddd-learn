@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Repositories;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Infrastructure.Repositories;
 
@@ -13,11 +12,7 @@ public class ProductRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new ProductRepository(context);
-        var product = new Product(
-            Guid.NewGuid(),
-            new ProductName("商品 テスト"),
-            new Price(100)
-        );
+        var product = ProductBuilder.New().Build();
 
         // When
         repository.Add(product);
@@ -37,8 +32,8 @@ public class ProductRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new ProductRepository(context);
-        var product1 = new Product(Guid.NewGuid(), new ProductName("商品1"), new Price(100));
-        var product2 = new Product(Guid.NewGuid(), new ProductName("商品2"), new Price(200));
+        var product1 = ProductBuilder.New().WithName("商品A").WithPrice(100).Build();
+        var product2 = ProductBuilder.New().WithName("商品B").WithPrice(200).Build();
 
         // When
         repository.Add(product1);
@@ -56,11 +51,7 @@ public class ProductRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new ProductRepository(context);
-        var product = new Product(
-            Guid.NewGuid(),
-            new ProductName("商品（変更前）"),
-            new Price(100)
-        );
+        var product = ProductBuilder.New().WithName("商品（変更前）").Build();
         repository.Add(product);
         await context.SaveChangesAsync();
 
@@ -81,7 +72,7 @@ public class ProductRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new ProductRepository(context);
-        var product = new Product(Guid.NewGuid(), new ProductName("商品"), new Price(100));
+        var product = ProductBuilder.New().Build();
         repository.Add(product);
         await context.SaveChangesAsync();
 

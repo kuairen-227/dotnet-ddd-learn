@@ -1,10 +1,11 @@
 using Moq;
 using WebApi.Application.DTOs;
+using WebApi.Application.Mappings;
 using WebApi.Application.Services;
 using WebApi.Domain.Common;
 using WebApi.Domain.Entities;
 using WebApi.Domain.Repositories;
-using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Application.Services;
 
@@ -29,8 +30,8 @@ public class ProductServiceTests
         // Given
         var products = new List<Product>
         {
-            new Product(Guid.NewGuid(), new ProductName("テスト 商品1"), new Price(100)),
-            new Product(Guid.NewGuid(), new ProductName("テスト 商品2"), new Price(200))
+            ProductBuilder.New().WithName("商品A").WithPrice(100).Build(),
+            ProductBuilder.New().WithName("商品B").WithPrice(200).Build()
         };
         _productMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(products);
@@ -39,7 +40,8 @@ public class ProductServiceTests
         var result = await _service.GetProductsAsync(CancellationToken.None);
 
         // Then
-        Assert.Equal(2, result.Count());
+        var productList = products.Select(p => p.ToDto()).ToList();
+        Assert.Equal(productList, result);
     }
 
     [Fact]
@@ -47,7 +49,7 @@ public class ProductServiceTests
     {
         // Given
         var productId = Guid.NewGuid();
-        var product = new Product(productId, new ProductName("テスト 商品1"), new Price(100));
+        var product = ProductBuilder.New().Build();
         _productMock.Setup(r => r.GetByIdAsync(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(product);
 
@@ -56,7 +58,7 @@ public class ProductServiceTests
 
         // Then
         Assert.NotNull(result);
-        Assert.Equal(productId, result.Id);
+        Assert.Equal(product.ToDto(), result);
     }
 
     [Fact]

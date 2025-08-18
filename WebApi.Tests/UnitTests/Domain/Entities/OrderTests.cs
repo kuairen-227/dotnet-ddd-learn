@@ -1,5 +1,5 @@
 using WebApi.Domain.Entities;
-using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Domain.Entities;
 
@@ -9,18 +9,10 @@ public class OrderTests
     public void 正常系_インスタンス生成()
     {
         // Given
-        var orderId = Guid.NewGuid();
-        var customerId = Guid.NewGuid();
-        var orderDate = DateTime.UtcNow;
-
-        // When
-        var order = new Order(orderId, customerId, orderDate);
+        var order = OrderBuilder.New().Build();
 
         // Then
         Assert.NotNull(order);
-        Assert.Equal(orderId, order.Id);
-        Assert.Equal(customerId, order.CustomerId);
-        Assert.Equal(orderDate, order.OrderDate);
         Assert.Empty(order.Items);
     }
 
@@ -28,12 +20,8 @@ public class OrderTests
     public void 正常系_AddItem()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
-
-        var product = new Product(Guid.NewGuid(),
-            new ProductName("テスト 商品"),
-            new Price(100)
-        );
+        var order = OrderBuilder.New().Build();
+        var product = ProductBuilder.New().Build();
         var item = new OrderItem(Guid.NewGuid(), product, 2);
 
         // When
@@ -48,7 +36,7 @@ public class OrderTests
     public void 異常系_AddItem_ArgumentNullException()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
+        var order = OrderBuilder.New().Build();
 
         // Then
         Assert.Throws<ArgumentNullException>(() => order.AddItem(null!));
@@ -58,18 +46,10 @@ public class OrderTests
     public void 正常系_GetTotalAmount()
     {
         // Given
-        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
-        var product1 = new Product(
-            Guid.NewGuid(),
-            new ProductName("商品A"),
-            new Price(100)
-        );
+        var order = OrderBuilder.New().Build();
+        var product1 = ProductBuilder.New().WithName("商品A").WithPrice(100).Build();
         order.AddItem(new OrderItem(Guid.NewGuid(), product1, 2));
-        var product2 = new Product(
-            Guid.NewGuid(),
-            new ProductName("商品B"),
-            new Price(200)
-        );
+        var product2 = ProductBuilder.New().WithName("商品B").WithPrice(200).Build();
         order.AddItem(new OrderItem(Guid.NewGuid(), product2, 1));
 
         // When

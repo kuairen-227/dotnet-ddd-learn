@@ -1,5 +1,5 @@
-using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Domain.Entities;
 
@@ -9,7 +9,7 @@ public class CustomerTests
     public void 正常系_インスタンス生成()
     {
         // Given
-        var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
+        var customer = CustomerBuilder.New().Build();
 
         // Then
         Assert.NotNull(customer);
@@ -22,7 +22,7 @@ public class CustomerTests
     {
         // Then
         Assert.Throws<ArgumentNullException>(() =>
-            new Customer(Guid.NewGuid(), "", new Email("test@example.com"))
+            CustomerBuilder.New().WithName("").Build()
         );
     }
 
@@ -31,7 +31,7 @@ public class CustomerTests
     {
         // Then
         Assert.Throws<ArgumentNullException>(() =>
-            new Customer(Guid.NewGuid(), "テスト 太郎", new Email(""))
+            CustomerBuilder.New().WithEmail("").Build()
         );
     }
 
@@ -39,7 +39,7 @@ public class CustomerTests
     public void 正常系_ChangeEmail()
     {
         // Given
-        var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
+        var customer = CustomerBuilder.New().Build();
 
         // When
         customer.ChangeEmail(new Email("test2@example.com"));
@@ -52,7 +52,7 @@ public class CustomerTests
     public void 異常系_ChangeEmail_メールアドレスが空_ArgumentException()
     {
         // Given
-        var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
+        var customer = CustomerBuilder.New().Build();
 
         // Then
         Assert.Throws<ArgumentNullException>(() =>

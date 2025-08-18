@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Repositories;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Infrastructure.Repositories;
 
@@ -13,11 +12,7 @@ public class CustomerRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new CustomerRepository(context);
-        var customer = new Customer(
-            Guid.NewGuid(),
-            "テスト 太郎",
-            new Email("test@example.com")
-        );
+        var customer = CustomerBuilder.New().Build();
 
         // When
         repository.Add(customer);
@@ -37,8 +32,10 @@ public class CustomerRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new CustomerRepository(context);
-        var customer1 = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test1@example.com"));
-        var customer2 = new Customer(Guid.NewGuid(), "テスト 次郎", new Email("test2@example.com"));
+        var customer1 = CustomerBuilder
+            .New().WithName("テスト 太郎").WithEmail("test1@example.com").Build();
+        var customer2 = CustomerBuilder
+            .New().WithName("テスト 次郎").WithEmail("test2@example.com").Build();
 
         // When
         repository.Add(customer1);
@@ -56,11 +53,7 @@ public class CustomerRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new CustomerRepository(context);
-        var customer = new Customer(
-            Guid.NewGuid(),
-            "テスト 太郎",
-            new Email("test@example.com")
-        );
+        var customer = CustomerBuilder.New().Build();
         repository.Add(customer);
         await context.SaveChangesAsync();
 
@@ -81,7 +74,7 @@ public class CustomerRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new CustomerRepository(context);
-        var customer = new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com"));
+        var customer = CustomerBuilder.New().Build();
         repository.Add(customer);
         await context.SaveChangesAsync();
 

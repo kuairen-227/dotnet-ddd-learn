@@ -1,10 +1,11 @@
 using Moq;
 using WebApi.Application.DTOs;
+using WebApi.Application.Mappings;
 using WebApi.Application.Services;
 using WebApi.Domain.Common;
 using WebApi.Domain.Entities;
 using WebApi.Domain.Repositories;
-using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Application.Services;
 
@@ -29,8 +30,8 @@ public class CustomerServiceTests
         // Given
         var customers = new List<Customer>
         {
-            new Customer(Guid.NewGuid(), "テスト 太郎", new Email("test@example.com")),
-            new Customer(Guid.NewGuid(), "テスト 次郎", new Email("test2@example.com"))
+            CustomerBuilder.New().WithName("テスト 太郎").WithEmail("test1@example.com").Build(),
+            CustomerBuilder.New().WithName("テスト 次郎").WithEmail("test2@example.com").Build()
         };
         _customerMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(customers);
@@ -39,24 +40,24 @@ public class CustomerServiceTests
         var result = await _service.GetCustomersAsync(CancellationToken.None);
 
         // Then
-        Assert.Equal(2, result.Count());
+        var customersList = customers.Select(c => c.ToDto()).ToList();
+        Assert.Equal(customersList, result);
     }
 
     [Fact]
     public async Task 正常系_GetCustomerAsync_顧客が存在する場合_顧客情報が取得できる()
     {
         // Given
-        var customerId = Guid.NewGuid();
-        var customer = new Customer(customerId, "テスト 太郎", new Email("test@example.com"));
-        _customerMock.Setup(r => r.GetByIdAsync(customerId, It.IsAny<CancellationToken>()))
+        var customer = CustomerBuilder.New().Build();
+        _customerMock.Setup(r => r.GetByIdAsync(customer.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(customer);
 
         // When
-        var result = await _service.GetCustomerAsync(customerId, CancellationToken.None);
+        var result = await _service.GetCustomerAsync(customer.Id, CancellationToken.None);
 
         // Then
         Assert.NotNull(result);
-        Assert.Equal(customerId, result.Id);
+        Assert.Equal(customer.ToDto(), result);
     }
 
     [Fact]

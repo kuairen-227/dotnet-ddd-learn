@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using WebApi.Domain.Entities;
-using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Repositories;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Infrastructure.Repositories;
 
@@ -14,16 +12,8 @@ public class OrderRepositoryTests
         var context = DbContextFactory.CreateInMemoryDbContext();
         var customerRepo = new CustomerRepository(context);
         var orderRepo = new OrderRepository(context);
-        var customer = new Customer(
-            Guid.NewGuid(),
-            "テスト 太郎",
-            new Email("test@example.com")
-        );
-        var order = new Order(
-            Guid.NewGuid(),
-            customer.Id,
-            DateTime.UtcNow
-        );
+        var customer = CustomerBuilder.New().Build();
+        var order = OrderBuilder.New().WithCustomer(customer).Build();
 
         // When
         customerRepo.Add(customer);
@@ -44,18 +34,12 @@ public class OrderRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new OrderRepository(context);
-        var customer1 = new Customer(
-            Guid.NewGuid(),
-            "テスト 太郎",
-            new Email("test1@example.com")
-        );
-        var order1 = new Order(Guid.NewGuid(), customer1.Id, DateTime.UtcNow);
-        var customer2 = new Customer(
-            Guid.NewGuid(),
-            "テスト 次郎",
-            new Email("test2@example.com")
-        );
-        var order2 = new Order(Guid.NewGuid(), customer2.Id, DateTime.UtcNow);
+        var order1 = OrderBuilder.New().WithCustomer(
+            CustomerBuilder.New().WithName("テスト 太郎").WithEmail("test1@example.com").Build()
+        ).Build();
+        var order2 = OrderBuilder.New().WithCustomer(
+            CustomerBuilder.New().WithName("テスト 次郎").WithEmail("test2@example.com").Build()
+        ).Build();
 
         // When
         repository.Add(order1);
@@ -73,16 +57,7 @@ public class OrderRepositoryTests
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
         var repository = new OrderRepository(context);
-        var customer = new Customer(
-            Guid.NewGuid(),
-            "テスト 太郎",
-            new Email("test@example.com")
-        );
-        var order = new Order(
-            Guid.NewGuid(),
-            customer.Id,
-            DateTime.UtcNow
-        );
+        var order = OrderBuilder.New().Build();
         repository.Add(order);
         await context.SaveChangesAsync();
 

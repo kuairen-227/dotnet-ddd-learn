@@ -5,6 +5,7 @@ using WebApi.Domain.Common;
 using WebApi.Domain.Entities;
 using WebApi.Domain.Repositories;
 using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Application.Services;
 
@@ -36,8 +37,8 @@ public class OrderServiceTests
         // Given
         var orders = new List<Order>
         {
-            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow),
-            new Order(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow)
+            OrderBuilder.New().WithCustomer(CustomerBuilder.New().Build()).Build(),
+            OrderBuilder.New().WithCustomer(CustomerBuilder.New().Build()).Build()
         };
         _orderMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(orders);
@@ -53,17 +54,18 @@ public class OrderServiceTests
     public async Task 正常系_GetOrderAsync_注文が存在する場合_注文情報が取得できる()
     {
         // Given
-        var orderId = Guid.NewGuid();
-        var order = new Order(orderId, Guid.NewGuid(), DateTime.UtcNow);
-        _orderMock.Setup(r => r.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
+        var order = OrderBuilder.New().Build();
+        _orderMock.Setup(r => r.GetByIdAsync(order.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(order);
 
         // When
-        var result = await _service.GetOrderAsync(orderId, CancellationToken.None);
+        var result = await _service.GetOrderAsync(order.Id, CancellationToken.None);
 
         // Then
         Assert.NotNull(result);
-        Assert.Equal(orderId, result.Id);
+        Assert.Equal(order.Id, result.Id);
+        Assert.Equal(order.CustomerId, result.CustomerId);
+        Assert.Equal(order.OrderDate, result.OrderDate);
     }
 
     [Fact]

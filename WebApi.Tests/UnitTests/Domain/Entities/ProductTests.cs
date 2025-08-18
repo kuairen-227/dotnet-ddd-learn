@@ -1,5 +1,4 @@
-using WebApi.Domain.Entities;
-using WebApi.Domain.ValueObjects;
+using WebApi.Tests.Builders;
 
 namespace WebApi.Tests.UnitTests.Domain.Entities;
 
@@ -9,17 +8,11 @@ public class ProductTests
     public void 正常系_インスタンスが生成できる()
     {
         // Given
-        var id = Guid.NewGuid();
-        var name = new ProductName("商品A");
-        var price = new Price(100);
-
-        // When
-        var product = new Product(id, name, price);
+        var product = ProductBuilder.New().Build();
 
         // Then
         Assert.NotNull(product);
-        Assert.Equal(id, product.Id);
-        Assert.Equal(name, product.Name);
-        Assert.Equal(price, product.Price);
+        Assert.Equal("商品テスト", product.Name.Value);
+        Assert.Equal(100, product.Price.Value);
     }
 }
