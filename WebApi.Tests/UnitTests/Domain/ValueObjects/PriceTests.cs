@@ -19,7 +19,7 @@ public class PriceTests
     }
 
     [Fact]
-    public void 異常系_価格が0以下_ArgumentOutOfRangeException()
+    public void 異常系_価格が1未満_ArgumentOutOfRangeException()
     {
         // Given
         var invalidPrice = 0;

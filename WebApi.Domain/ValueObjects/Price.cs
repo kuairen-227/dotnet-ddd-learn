@@ -6,8 +6,8 @@ public sealed class Price
 
     public Price(int value)
     {
-        if (value < 0)
-            throw new ArgumentNullException("価格は1円以上でなければなりません");
+        if (value < 1)
+            throw new ArgumentOutOfRangeException("価格は1円以上でなければなりません");
 
         Value = value;
     }
