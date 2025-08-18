@@ -12,7 +12,8 @@ public class OrderRepositoryTests
     {
         // Given
         var context = DbContextFactory.CreateInMemoryDbContext();
-        var repository = new OrderRepository(context);
+        var customerRepo = new CustomerRepository(context);
+        var orderRepo = new OrderRepository(context);
         var customer = new Customer(
             Guid.NewGuid(),
             "テスト 太郎",
@@ -25,14 +26,15 @@ public class OrderRepositoryTests
         );
 
         // When
-        repository.Add(order);
+        customerRepo.Add(customer);
+        orderRepo.Add(order);
         await context.SaveChangesAsync();
-        var result = await repository.GetByIdAsync(order.Id);
+        var result = await orderRepo.GetByIdAsync(order.Id);
 
         // Then
         Assert.NotNull(result);
         Assert.Equal(order.Id, result.Id);
-        Assert.Equal(customer, result.Customer);
+        Assert.Equal(customer.Id, result.Customer.Id);
         Assert.Equal(order.OrderDate, result.OrderDate);
     }
 
