@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using WebApi.Infrastructure.Contexts;
 
 namespace WebApi.Tests.UnitTests.Infrastructure;
